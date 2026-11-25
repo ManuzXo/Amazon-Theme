@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "Amazon Dark Mode",
+  "version": "1.1.1",
+  "description": "Modalità scura per Amazon.",
+  "permissions": ["storage"],
+  "action": {
+    "default_title": "Amazon Dark Mode",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.amazon.it/*",
+        "*://*.amazon.com/*",
+        "*://*.amazon.de/*",
+        "*://*.amazon.fr/*",
+        "*://*.amazon.es/*",
+        "*://*.amazon.co.uk/*",
+        "*://*.amazon.nl/*",
+        "*://*.amazon.ca/*",
+        "*://*.amazon.com.be/*",
+        "*://*.amazon.pl/*",
+        "*://*.amazon.se/*"
+      ],
+      "css": ["dark.css"],
+      "js": ["themes.js", "content.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "amazon-dark-mode@local",
+      "strict_min_version": "109.0"
+    }
+  }
+}

@@ -1,0 +1,76 @@
+/*
+ * Dark mode via inversione: la pagina viene invertita e ruotata di 180° di tonalità
+ * (i colori restano riconoscibili), poi i media vengono re-invertiti per tornare normali.
+ * È robusto ai continui cambi di layout di Amazon, a differenza di override per classe.
+ *
+ * I colori del tema arrivano come variabili CSS da content.js (vedi themes.js):
+ * --amz-cap/--amz-lift sono già convertiti nello spazio "pre-inversione".
+ */
+
+html.amz-dark {
+  filter: invert(1) hue-rotate(180deg) !important;
+  background-color: #fff !important;
+}
+
+/*
+ * Due livelli in fusione sopra tutta la pagina, prima dell'inversione:
+ *  - darken  abbassa i bianchi a --amz-cap  → dopo l'inversione diventano il colore di sfondo
+ *  - lighten alza i neri a --amz-lift       → dopo l'inversione diventano il colore del testo
+ */
+html.amz-dark::before,
+html.amz-dark::after {
+  content: "" !important;
+  display: block !important;
+  position: fixed !important;
+  inset: 0 !important;
+  pointer-events: none !important;
+  z-index: 2147483647 !important;
+}
+
+html.amz-dark::before {
+  background: var(--amz-cap, #dddddd) !important;
+  mix-blend-mode: darken !important;
+}
+
+html.amz-dark::after {
+  background: var(--amz-lift, #1c1c1c) !important;
+  mix-blend-mode: lighten !important;
+}
+
+/*
+ * Media: ri-applicare lo stesso filtro li riporta ai colori originali.
+ * Mai su <picture>: è un box inline spesso a dimensione zero (l'<img> dentro è posizionato
+ * in assoluto) e un filtro lì ritaglia l'immagine fino a farla sparire. Si filtra l'<img>.
+ */
+html.amz-dark :is(img, video, canvas, iframe, embed, object, [style*="background-image"]) {
+  filter: brightness(var(--amz-img, 1)) invert(1) hue-rotate(180deg) !important;
+}
+
+html.amz-dark picture {
+  filter: none !important;
+}
+
+/* Barra in alto e footer: li lasciamo non invertiti (logo e icone sono fatti per sfondo scuro)... */
+html.amz-dark :is(#nav-belt, #nav-main, #navFooter) {
+  filter: invert(1) hue-rotate(180deg) !important;
+}
+
+html.amz-dark :is(#nav-belt, #nav-main, #navFooter)
+  :is(img, video, picture, canvas, iframe, [style*="background-image"]) {
+  filter: none !important;
+}
+
+/* ...ma con il colore del tema al posto dell'arancione/blu di Amazon. */
+html.amz-dark :is(#nav-belt, #nav-main, #nav-belt .nav-fill, #nav-main .nav-fill) {
+  background: var(--amz-nav) !important;
+}
+
+/* Questi sono invertiti insieme alla pagina: colori già convertiti. */
+html.amz-dark :is(#navbar-main, #navbar, #nav-subnav) {
+  background: var(--amz-nav-pre) !important;
+}
+
+/* Linea colorata sotto l'intera barra, per staccarla dalla pagina. */
+html.amz-dark #navbar-main {
+  border-bottom: 3px solid var(--amz-accent-pre) !important;
+}
