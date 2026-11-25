@@ -5,7 +5,7 @@ Estensione per browser che mette Amazon in modalità scura.
 ## Installazione
 
 **Chrome / Edge / Brave**
-1. Apri `chrome://extensions` (o ``)
+1. Apri `chrome://extensions` (o `edge://extensions`)
 2. Attiva **Modalità sviluppatore**
 3. **Carica estensione non pacchettizzata** → seleziona questa cartella
 
